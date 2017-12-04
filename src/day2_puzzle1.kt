@@ -16,7 +16,6 @@ fun main(args: Array<String>) {
     }
     var checksum = 0
     table.forEach {
-        // TODO: remove !! using null check before :)
         row -> val diff = row.max()!! - row.min()!!; checksum += diff
     }
     print("Checksum: $checksum")
