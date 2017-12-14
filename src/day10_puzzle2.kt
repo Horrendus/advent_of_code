@@ -1,7 +1,11 @@
 fun main(args: Array<String>) {
     println("Enter puzzle input")
     val input = readLine() ?: ""
+    val hash = calculateDenseHash(input)
+    println("$hash")
+}
 
+fun calculateDenseHash(input: String): String {
     val lengthsSuffix = listOf(17, 31, 73, 47, 23)
     val lengths = input.trim().map { it.toInt() } + lengthsSuffix
 
@@ -37,7 +41,8 @@ fun main(args: Array<String>) {
         }
         denseHash.add(hash)
     }
-    denseHash.forEach {
-        print(String.format("%02x", it))
+    val denseHashHex = denseHash.map {
+        String.format("%02x", it)
     }
+    return denseHashHex.joinToString("")
 }
