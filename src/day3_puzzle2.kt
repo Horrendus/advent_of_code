@@ -65,24 +65,24 @@ private fun nextCell(currentDirection: Direction, cell: Pair<Int, Int>): Pair<Di
 private fun neighbour(direction: Direction, cell: Pair<Int, Int>): Pair<Int, Int> {
     when (direction) {
         Direction.UP ->
-            when (cell.first - 1 > 0) {
-                true -> return cell + Pair(-1, 0)
-                false -> return invalid
+            return when (cell.first - 1 > 0) {
+                true -> cell + Pair(-1, 0)
+                false -> invalid
             }
         Direction.DOWN ->
-            when (cell.first + 1 < dimension) {
-                true -> return cell + Pair(1, 0)
-                false -> return invalid
+            return when (cell.first + 1 < dimension) {
+                true -> cell + Pair(1, 0)
+                false -> invalid
             }
         Direction.LEFT ->
-            when (cell.second - 1 > 0) {
-                true -> return cell + Pair(0, -1)
-                false -> return invalid
+            return when (cell.second - 1 > 0) {
+                true -> cell + Pair(0, -1)
+                false -> invalid
             }
         Direction.RIGHT ->
-            when (cell.second + 1 < dimension) {
-                true -> return cell + Pair(0, 1)
-                false -> return invalid
+            return when (cell.second + 1 < dimension) {
+                true -> cell + Pair(0, 1)
+                false -> invalid
             }
     }
 
@@ -96,7 +96,7 @@ private fun calculateNumber(cell: Pair<Int, Int>): Int {
     return maxOf(neighbourValues.sum(), 1)
 }
 
-operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>): Pair<Int, Int> {
+private operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>): Pair<Int, Int> {
     return Pair(first + other.first, second + other.second)
 }
 

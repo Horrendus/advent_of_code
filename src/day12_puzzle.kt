@@ -1,5 +1,5 @@
-val groups = mutableListOf<MutableList<Int>>()
-val programs = hashMapOf<Int, List<Int>>()
+private val groups = mutableListOf<MutableList<Int>>()
+private val programs = hashMapOf<Int, List<Int>>()
 
 fun main(args: Array<String>) {
     println("Enter puzzle input")
