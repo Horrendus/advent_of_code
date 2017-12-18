@@ -1,4 +1,4 @@
-var registers = hashMapOf<String, Int>()
+private var registers = hashMapOf<String, Int>()
 
 fun main(args: Array<String>) {
     println("Enter puzzle input")
@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
     println("Maximum Value ever encountered: $maximumValue")
 }
 
-fun handleLine(line: String) {
+private fun handleLine(line: String) {
     val tokens = line.split(" ")
     val register = tokens[0]
     val operation = tokens[1]
@@ -32,7 +32,7 @@ fun handleLine(line: String) {
     }
 }
 
-fun testCondition(condition: Triple<String, String, Int>) : Boolean {
+private fun testCondition(condition: Triple<String, String, Int>) : Boolean {
     val registerValue = getValue(condition.first)
     return when (condition.second) {
         ">" -> registerValue > condition.third
@@ -45,7 +45,7 @@ fun testCondition(condition: Triple<String, String, Int>) : Boolean {
     }
 }
 
-fun doOperation(operation: Triple<String, String, Int>) : Int {
+private fun doOperation(operation: Triple<String, String, Int>) : Int {
     val registerValue = getValue(operation.first)
     return when (operation.second) {
         "inc" -> registerValue + operation.third
@@ -54,6 +54,6 @@ fun doOperation(operation: Triple<String, String, Int>) : Int {
     }
 }
 
-fun getValue(register: String) : Int {
+private fun getValue(register: String) : Int {
     return registers[register] ?: 0
 }
