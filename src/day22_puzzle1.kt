@@ -3,8 +3,8 @@ typealias Position = Pair<Int, Int>
 val directions = listOf(Position(-1, 0), Position(0, 1), Position(1, 0), Position(0, -1))
 
 // Input is 25x25. Virus makes 1000 bursts. 2025 allows the virus to move
-// the maximum of 1000 in the same direction and makes position offset easy
-val infectionStatusMap = Array(2025) { Array(2025) { '.' } }
+// the maximum of 1000 in the same direction and makes position bursts easy
+private val infectionStatusMap = Array(2025) { Array(2025) { '.' } }
 
 fun main(args: Array<String>) {
     val input = mutableListOf<String>()
