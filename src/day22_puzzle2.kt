@@ -79,3 +79,7 @@ class Virus2 {
 private operator fun Pair<Int, Int>.plus(other: Pair<Int, Int>): Pair<Int, Int> {
     return Pair(first + other.first, second + other.second)
 }
+
+private operator fun Array<Array<Char>>.get(position: Position): Char {
+    return this[position.first][position.second]
+}

@@ -61,7 +61,7 @@ class Virus {
     }
 }
 
-operator fun Array<Array<Char>>.get(position: Position): Char {
+private operator fun Array<Array<Char>>.get(position: Position): Char {
     return this[position.first][position.second]
 }
 

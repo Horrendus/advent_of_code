@@ -13,6 +13,7 @@ Notes:
   * Day 13
   * Day 15
   * Day 16
+  * Day 19
   * Day 20
   * Day 24
   * Day 25
