@@ -5,7 +5,7 @@ fun main(args: Array<String>) {
     println("$hash")
 }
 
-fun calculateDenseHash(input: String): String {
+private fun calculateDenseHash(input: String): String {
     val lengthsSuffix = listOf(17, 31, 73, 47, 23)
     val lengths = input.trim().map { it.toInt() } + lengthsSuffix
 

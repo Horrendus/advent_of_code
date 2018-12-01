@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
     println("Total Number of Groups: ${groups.size}")
 }
 
-fun calculateAndAddGroup(program: Int) {
+private fun calculateAndAddGroup(program: Int) {
     val flatGroups = groups.flatten()
     if (flatGroups.contains(program)) {
         // not a new group
