@@ -6,3 +6,4 @@ Notes:
 * The following days have only one solution file as Puzzle 2 only extended Puzzle 1:
     * Day 1
     * Day 3
+    * Day 4
