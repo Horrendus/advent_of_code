@@ -36,8 +36,15 @@ class IntCodeComputer:
             return 0
         return self.program[address]
 
-    async def input(self, _):
-        operand1 = self.program[self.sp + 1]
+    async def input(self, opcode_list):
+        operand1 = self.read_memory(self.sp + 1)
+        # operand1 = (
+        #     operand1
+        #     if opcode_list[2] == 1
+        #     else self.relative_base + operand1
+        #     if opcode_list[2] == 1
+        #     else self.read_memory(operand1)
+        # )
         res = await self.input_function()
         self.write_memory(res, operand1)
         self.sp += 2
@@ -91,23 +98,20 @@ class IntCodeComputer:
         self.sp += 2
 
     def get_one_operand(self, opcode_list):
+        param_mode_1 = opcode_list[2]
         operand1 = self.read_memory(self.sp + 1)
-        return (
-            operand1
-            if opcode_list[2] == 1
-            else self.read_memory(self.relative_base + operand1)
-            if opcode_list[2] == 2
-            else self.read_memory(operand1)
-        )
+        operand1, _, _ = self.parameter_translation(operand1, 0, 0, param_mode_1, 0, 0)
+        return operand1
 
     def get_two_operands(self, opcode_list):
         param_mode_1 = opcode_list[2]
         param_mode_2 = opcode_list[1]
         operand1 = self.read_memory(self.sp + 1)
         operand2 = self.read_memory(self.sp + 2)
-        return self.parameter_translation(
-            operand1, operand2, param_mode_1, param_mode_2
+        op1, op2, _ = self.parameter_translation(
+            operand1, operand2, 0, param_mode_1, param_mode_2, 0
         )
+        return op1, op2
 
     def get_three_operands(self, opcode_list):
         param_mode_1 = opcode_list[2]
@@ -116,13 +120,13 @@ class IntCodeComputer:
         operand1 = self.read_memory(self.sp + 1)
         operand2 = self.read_memory(self.sp + 2)
         operand3 = self.read_memory(self.sp + 3)
-        operand1, operand2 = self.parameter_translation(
-            operand1, operand2, param_mode_1, param_mode_2
+        operand1, operand2, operand3 = self.parameter_translation(
+            operand1, operand2, operand3, param_mode_1, param_mode_2, param_mode_3
         )
         return operand1, operand2, operand3
 
     def parameter_translation(
-        self, operand1, operand2, param_mode_1, param_mode_2
+        self, operand1, operand2, operand3, param_mode_1, param_mode_2, param_mode_3
     ) -> Tuple[int, int]:
         op1 = (
             operand1
@@ -138,7 +142,14 @@ class IntCodeComputer:
             if param_mode_2 == 2
             else self.read_memory(operand2)
         )
-        return op1, op2
+        # op3 = (
+        #     operand3
+        #     if param_mode_3 == 1
+        #     else self.relative_base + operand3
+        #     if param_mode_3 == 2
+        #     else self.read_memory(operand3)
+        # )
+        return op1, op2, operand3
 
     @staticmethod
     def parse_opcode(opcode):
