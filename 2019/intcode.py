@@ -4,6 +4,7 @@ from typing import List, Tuple
 class IntCodeComputer:
     def __init__(self, program: List[int], input_function, output_function):
         self.sp = 0
+        self.relative_base = 0
         self.program = program.copy()
         self.input_function = input_function
         self.output_function = output_function
@@ -19,6 +20,7 @@ class IntCodeComputer:
             6: self.jmp_zero,
             7: self.lt_other,
             8: self.eq_other,
+            9: self.adj_relative_base,
         }
 
     async def finish(self, _):
@@ -41,8 +43,7 @@ class IntCodeComputer:
         self.sp += 2
 
     async def output(self, opcode_list):
-        operand1 = self.program[self.sp + 1]
-        operand1 = operand1 if opcode_list[2] else self.read_memory(operand1)
+        operand1 = self.get_one_operand(opcode_list)
         await self.output_function(operand1)
         self.sp += 2
 
@@ -84,6 +85,21 @@ class IntCodeComputer:
         self.write_memory(int(res), operand3)
         self.sp += 4
 
+    async def adj_relative_base(self, opcode_list):
+        operand1 = self.get_one_operand(opcode_list)
+        self.relative_base += operand1
+        self.sp += 2
+
+    def get_one_operand(self, opcode_list):
+        operand1 = self.read_memory(self.sp + 1)
+        return (
+            operand1
+            if opcode_list[2] == 1
+            else self.read_memory(self.relative_base + operand1)
+            if opcode_list[2] == 2
+            else self.read_memory(operand1)
+        )
+
     def get_two_operands(self, opcode_list):
         param_mode_1 = opcode_list[2]
         param_mode_2 = opcode_list[1]
@@ -108,8 +124,20 @@ class IntCodeComputer:
     def parameter_translation(
         self, operand1, operand2, param_mode_1, param_mode_2
     ) -> Tuple[int, int]:
-        op1 = operand1 if param_mode_1 else self.read_memory(operand1)
-        op2 = operand2 if param_mode_2 else self.read_memory(operand2)
+        op1 = (
+            operand1
+            if param_mode_1 == 1
+            else self.read_memory(self.relative_base + operand1)
+            if param_mode_2 == 2
+            else self.read_memory(operand1)
+        )
+        op2 = (
+            operand2
+            if param_mode_2 == 1
+            else self.read_memory(self.relative_base + operand2)
+            if param_mode_2 == 2
+            else self.read_memory(operand2)
+        )
         return op1, op2
 
     @staticmethod
