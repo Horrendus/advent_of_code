@@ -1,3 +1,8 @@
+import asyncio
+
+import intcode
+
+
 def parse_opcode(opcode):
     opcode = str(opcode).zfill(5)
     opcode_list = [int(code) for code in list(opcode)]
@@ -44,6 +49,10 @@ def run_program(program):
             program[operand3] = result
             current_pos += 4
         if opcode_op == 5 or opcode_op == 6:
+            dbg = False
+            if current_pos == 288:
+                print("OPCODE: ", opcode_list)
+                dbg = True
             operand1 = program[current_pos + 1]
             if param_mode_1 == 0:
                 operand1 = program[operand1]
@@ -54,6 +63,8 @@ def run_program(program):
                 current_pos = operand2
             else:
                 current_pos += 3
+            if dbg:
+                print("new pos: ", current_pos)
         if opcode_op == 7 or opcode_op == 8:
             operand1 = program[current_pos + 1]
             if param_mode_1 == 0:
@@ -76,8 +87,17 @@ def puzzle1(program):
     run_program(program)
 
 
-def puzzle2(data):
-    pass
+async def puzzle2(program):
+    print("Testing with new IntCode class")
+
+    async def simple_input():
+        return 5
+
+    async def simple_output(operand):
+        print("Output: ", operand)
+
+    computer = intcode.IntCodeComputer(program, simple_input, simple_output)
+    await computer.run()
 
 
 def main():
@@ -87,7 +107,7 @@ def main():
     original_program = program.copy()
     # print(program)
     puzzle1(program)
-    puzzle2(data)
+    asyncio.run(puzzle2(original_program))
 
 
 if __name__ == "__main__":
