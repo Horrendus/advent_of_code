@@ -1,6 +1,7 @@
 def puzzle1(data):
     pass
 
+
 def puzzle2(data):
     pass
 
