@@ -7,7 +7,7 @@ def puzzle2(data):
 
 
 def parse_input(data):
-    return data
+    return data.split("\n")
 
 
 def main():
