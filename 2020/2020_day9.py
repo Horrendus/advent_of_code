@@ -13,7 +13,7 @@ def is_sum_of_two_elements(number: int, arr: List[int]):
 
 def puzzle1(data):
     for i in range(25, len(data)):
-        arr = data[i-25:i]
+        arr = data[i - 25 : i]
         if not is_sum_of_two_elements(data[i], arr):
             print("Puzzle 1: ", data[i])
             return data[i]
@@ -21,7 +21,21 @@ def puzzle1(data):
 
 
 def puzzle2(data, number):
-    data = data.sort()
+    x = 2
+    start = 0
+    end = 0
+    while x < len(data):
+        for start in range(len(data) - x):
+            end = start + x
+            if end >= len(data):
+                break
+            arr = data[start:end]
+            test_sum = sum(arr)
+            if test_sum == number:
+                print("Puzzle 2: ", min(arr) + max(arr))
+                return
+        x += 1
+    print("Puzzle 2: no range found?")
 
 
 def parse_input(data):
