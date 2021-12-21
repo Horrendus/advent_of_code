@@ -51,7 +51,21 @@ def puzzle1(data):
 
 
 def puzzle2(data):
-    pass
+    numbers, boards = data
+    last_winning_board = None
+    last_winning_number = None
+    for number in numbers:
+        winning_boards = []
+        for board in boards:
+            bingo = bingo_round(number, board)
+            if bingo:
+                winning_boards.append(board)
+                last_winning_board = board
+                last_winning_number = number
+        for board in winning_boards:
+            boards.remove(board)
+    sum = calculate_board_sum_unmarked(last_winning_board)
+    print("Puzzle 1: ", sum * last_winning_number)
 
 
 def parse_input(data):
